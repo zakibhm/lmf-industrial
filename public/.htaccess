@@ -1,0 +1,24 @@
+# Static Next.js export (output: 'export') + PHP contact form, for OVH shared hosting.
+# Copied as-is from public/ into the build output.
+Options -Indexes
+DirectoryIndex index.html
+# Otherwise Apache redirects /page to /page/ when a page/ folder exists in the export
+DirectorySlash Off
+ErrorDocument 404 /404.html
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /
+
+# Force HTTPS (uncomment once the SSL certificate is active)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Contact form: /api/contact -> api/contact.php
+RewriteRule ^api/contact/?$ api/contact.php [L]
+
+# Pages without extension: /page -> page.html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.+)$ $1.html [L]
+</IfModule>
